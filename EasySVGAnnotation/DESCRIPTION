@@ -12,6 +12,7 @@ Depends:
     plyr,
     lattice
 Suggests:
+    Kmisc,
     knitr
 Description: Generates SVG plots from lattice xyplot / boxplot calls with
     tooltips generated based on variables available in the data frame
