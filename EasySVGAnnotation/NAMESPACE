@@ -1,0 +1,2 @@
+export(makeSVG)
+export(SVG.bwplot)
