@@ -3,12 +3,11 @@ Testing makeSVG
 
 This is an R markdown document that tests the 'makeSVG.R' function for several kinds of plots.
 
-```{r echo=FALSE, message=FALSE, results='asis'}
+```{r results='asis', tidy=FALSE}
 library("Kmisc")
 library("EasySVGAnnotation")
 attachHTML()
 set.seed(123)
-setwd( paste0( getwd(), "/inst/doc") )
 kDat <- data.frame(
   y = rt(100, 2),
   x = rnorm(100),
