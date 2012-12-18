@@ -1,0 +1,105 @@
+Testing makeSVG
+========================================================
+
+This is an R markdown document that tests the 'makeSVG.R' function for several kinds of plots.
+
+```{r echo=FALSE, message=FALSE, results='asis'}
+library("Kmisc")
+attachHTML()
+dropbox_folder <- "~/Dropbox"
+set.seed(123)
+setwd( dropbox_folder )
+setwd( "./R/kHandy/EasySVGAnnotation/Test/" )
+
+source( "../EasySVGAnnotation.R")
+
+kDat <- data.frame(
+  y = rt(100, 2),
+  x = rnorm(100),
+  gp1 = as.factor( rep(1:4, each=25) ),
+  gp2 = as.factor( rep( letters[1:2], each=50 ) ),
+  id=1:100
+)
+
+p("The data:")
+pre('kDat <- data.frame(
+  y = rt(100, 2),
+  x = rnorm(100),
+  gp1 = as.factor( rep(1:4, each=25) ),
+  gp2 = as.factor( rep( letters[1:2], each=50 ) ),
+  id=1:100
+)')
+
+p("A quick look at the head of the data...")
+makeHTMLTable( head( kDat ), use.col.names=TRUE )
+
+p("A simple xy plot.")
+kPlot <- xyplot( y ~ x, kDat )
+makeSVG( kPlot, kDat, outFile="simple_xy_plot.svg" )
+Kmisc:::kSvg( "simple_xy_plot.svg", width=300, height=300 )
+
+p("An xy plot, with panels.")
+kPlot <- xyplot( y ~ x | gp1, kDat )
+makeSVG( kPlot, kDat, outFile="xy_plot_with_panels.svg" )
+Kmisc:::kSvg( "xy_plot_with_panels.svg", width=300, height=300 )
+
+p("An xy plot with panels + grouping.")
+kPlot <- xyplot( y ~ x | gp1, kDat,
+                 groups=gp2,
+                 auto.key=TRUE
+                 )
+makeSVG( kPlot, kDat, outFile="xy_plot_with_panels_and_groups.svg" )
+Kmisc:::kSvg( "xy_plot_with_panels_and_groups.svg", width=300, height=300 )
+
+p("An xy plot with panels + grouping, and custom colors for groups.")
+kPlot <- xyplot( y ~ x | gp1, kDat,
+                 groups=gp2,
+                 col=c("orange","turquoise"),
+                 auto.key=TRUE,
+                 main="Testing!",
+                 xlab="xFoo",
+                 ylab="yBar"
+                 )
+makeSVG( kPlot, kDat, outFile="xy_plot_with_panels_and_groups_color.svg" )
+Kmisc:::kSvg( "xy_plot_with_panels_and_groups_color.svg", width=300, height=300 )
+
+p("An xy plot with panels + grouping, and custom colors for groups, and smoothers.")
+kPlot <- xyplot( y ~ x | gp1, kDat,
+                 groups=gp2,
+                 col=c("orange","turquoise"),
+                 auto.key=TRUE,
+                 panel = function(x, y, ...) {
+                   panel.xyplot(x, y, ...)
+                   panel.loess(x, y, col="red")
+                 },
+                 main="Testing!",
+                 xlab="xFoo",
+                 ylab="yBar"
+                 )
+makeSVG( kPlot, kDat, outFile="xy_plot_with_panels_and_groups_color_loess.svg" )
+Kmisc:::kSvg( "xy_plot_with_panels_and_groups_color_loess.svg", width=300, height=300 )
+
+p("A dotplot. Note that in order to get the fill on highlight, it is necessary to specify a 'hollow' pch.")
+
+kPlot <- dotplot( y ~ gp1, kDat, par.settings=list(
+  dot.symbol=list( pch=1 )
+  ) )
+makeSVG( kPlot, kDat, outFile="dotplot.svg" )
+Kmisc:::kSvg( "dotplot.svg", width=300, height=300 )
+
+p("dotplot with extra panels")
+kPlot <- dotplot( y ~ gp1 | gp2, kDat,
+                  par.settings=list(
+                    dot.symbol=list( pch=1 )
+                    )
+                  )
+makeSVG( kPlot, kDat, outFile="dotplot_with_panels.svg" )
+Kmisc:::kSvg( "dotplot_with_panels.svg", width=300, height=300 )
+
+p("boxplot with panels")
+kPlot <- SVG.bwplot( y ~ gp1 | gp2, kDat )
+makeSVG( kPlot, kDat, outFile="bwplot_with_panels.svg" )
+Kmisc:::kSvg( "bwplot_with_panels.svg", width=300, height=300 )
+
+
+```

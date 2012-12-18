@@ -1,0 +1,22 @@
+Package: EasySVGAnnotation
+Type: Package
+Title: Generates SVG plots from lattice xyplot / boxplot calls with
+    tooltips generated based on variables available in the data.frame
+    generating the call.
+Version: 0.1.0
+Date: 2012-07-18
+Author: Kevin Ushey
+Maintainer: Kevin Ushey <kevinushey@gmail.com>
+Depends:
+    SVGAnnotation,
+    plyr,
+    lattice
+Suggests:
+    knitr
+Description: Generates SVG plots from lattice xyplot / boxplot calls with
+    tooltips generated based on variables available in the data frame
+    generating the call. This package is relatively new and likely will not
+    handle all kinds of complex custom panel functions in lattice.
+License: GPL (>=2)
+Collate:
+    'EasySVGAnnotation.R'
