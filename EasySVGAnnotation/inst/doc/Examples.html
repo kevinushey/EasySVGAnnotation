@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Testing makeSVG</title>
+<title>EasySVGAnnotation</title>
 
 <style type="text/css">
 body, td {
@@ -178,20 +178,11 @@ hljs.initHighlightingOnLoad();
 </head>
 
 <body>
-<h1>Testing makeSVG</h1>
+<h1>EasySVGAnnotation</h1>
 
-<p>This is an R markdown document that tests the &#39;makeSVG.R&#39; function for several kinds of plots.</p>
+<p>This document gives a simple example of the usage of <code>EasySVGAnnotation</code>.</p>
 
-<pre><code class="r">library(&quot;Kmisc&quot;)
-</code></pre>
-
-<pre><code>## Loading required package: Rcpp
-</code></pre>
-
-<pre><code>## Loading required package: lattice
-</code></pre>
-
-<pre><code class="r">library(&quot;EasySVGAnnotation&quot;)
+<pre><code class="r">library(EasySVGAnnotation)
 </code></pre>
 
 <pre><code>## Loading required package: SVGAnnotation
@@ -203,176 +194,58 @@ hljs.initHighlightingOnLoad();
 <pre><code>## Loading required package: plyr
 </code></pre>
 
-<pre><code class="r">attachHTML()
-set.seed(123)
-kDat &lt;- data.frame(
+<pre><code>## Loading required package: lattice
+</code></pre>
+
+<pre><code class="r">library(lattice)
+library(Kmisc)
+</code></pre>
+
+<pre><code>## Loading required package: grid
+</code></pre>
+
+<pre><code>## Loading required package: Rcpp
+</code></pre>
+
+<pre><code class="r">set.seed(123)
+dat &lt;- data.frame(
   y = rt(100, 2),
-  x = rnorm(100),
-  gp1 = as.factor( rep(1:4, each=25) ),
-  gp2 = as.factor( rep( letters[1:2], each=50 ) ),
-  id=1:100
-)
+  x = rep(1:25, each=4),
+  gp1 = as.factor( rep(letters[1:4], each=25) ),
+  gp2 = as.factor( rep(letters[1:2], each=50 ) )
+  )
 
-p(&quot;A quick look at the head of the data...&quot;)
-</code></pre>
-
-<p>A quick look at the head of the data&hellip;</p>
-
-<pre><code class="r">makeHTMLTable( head( kDat ), use.col.names=TRUE )
-</code></pre>
-
-<table ><tr><td>y</td><td>x</td><td>gp1</td><td>gp2</td><td>id</td></tr><tr><td>-0.946720559255072</td><td>-0.133150964328944</td><td>1</td><td>a</td><td>1</td></tr><tr><td>-1.27335391978623</td><td>-1.75652739555764</td><td>1</td><td>a</td><td>2</td></tr><tr><td>-0.168031392925371</td><td>-0.388779864071743</td><td>1</td><td>a</td><td>3</td></tr><tr><td>-3.47849757728169</td><td>0.0892072230732945</td><td>1</td><td>a</td><td>4</td></tr><tr><td>1.76242068173173</td><td>0.845013004067436</td><td>1</td><td>a</td><td>5</td></tr><tr><td>2.57558527887169</td><td>0.962527968484271</td><td>1</td><td>a</td><td>6</td></tr></table> 
-
-<pre><code class="r">
-p(&quot;A simple xy plot.&quot;)
-</code></pre>
-
-<p>A simple xy plot.</p>
-
-<pre><code class="r">kPlot &lt;- xyplot( y ~ x, kDat )
-makeSVG( kPlot, kDat, outFile=&quot;simple_xy_plot.svg&quot; )
-Kmisc:::kSvg( &quot;simple_xy_plot.svg&quot;, width=300, height=300 )
+myPlot &lt;- xyplot( y ~ x | gp1, dat, groups=gp2,
+                  auto.key=TRUE,
+                  panel = function(x, y, ...) {
+                    panel.xyplot(x, y, ...)
+                    panel.loess(x, y, col=&quot;red&quot;, ...)
+                  } )
+makeSVG( myPlot, dat, outFile=&quot;test.svg&quot; )
+Kmisc:::kSvg(&quot;test.svg&quot;, width=300, height=300)
 </code></pre>
 
 <div align='center'>
-<embed src="simple_xy_plot.svg" width=300 height=300 type="image/svg+xml" />
+<embed src="test.svg" width=300 height=300 type="image/svg+xml" />
 </div>
 
-<pre><code class="r">
-p(&quot;An xy plot, with panels.&quot;)
-</code></pre>
+<p>Note how, when you highlight each point in the plot, you get a tool-tip popup
+of all other variables in the dataframe <code>dat</code>.</p>
 
-<p>An xy plot, with panels.</p>
+<p>The functionality works for lattice&#39;s <code>xyplot</code> and <code>dotplot</code>. A custom function,
+<code>SVG.bwplot</code>, is included for handling of lattice boxplots.</p>
 
-<pre><code class="r">kPlot &lt;- xyplot( y ~ x | gp1, kDat )
-makeSVG( kPlot, kDat, outFile=&quot;xy_plot_with_panels.svg&quot; )
-Kmisc:::kSvg( &quot;xy_plot_with_panels.svg&quot;, width=300, height=300 )
+<pre><code class="r">myPlot &lt;- SVG.bwplot( y ~ gp1, dat )
+makeSVG( myPlot, dat, outFile=&quot;test2.svg&quot;)
+Kmisc:::kSvg(&quot;test2.svg&quot;, width=300, height=300)
 </code></pre>
 
 <div align='center'>
-<embed src="xy_plot_with_panels.svg" width=300 height=300 type="image/svg+xml" />
+<embed src="test2.svg" width=300 height=300 type="image/svg+xml" />
 </div>
 
-<pre><code class="r">
-p(&quot;An xy plot with panels + grouping.&quot;)
-</code></pre>
-
-<p>An xy plot with panels + grouping.</p>
-
-<pre><code class="r">kPlot &lt;- xyplot( y ~ x | gp1, kDat,
-                 groups=gp2,
-                 auto.key=TRUE
-                 )
-makeSVG( kPlot, kDat, outFile=&quot;xy_plot_with_panels_and_groups.svg&quot; )
-Kmisc:::kSvg( &quot;xy_plot_with_panels_and_groups.svg&quot;, width=300, height=300 )
-</code></pre>
-
-<div align='center'>
-<embed src="xy_plot_with_panels_and_groups.svg" width=300 height=300 type="image/svg+xml" />
-</div>
-
-<pre><code class="r">
-p(&quot;An xy plot with panels + grouping, and custom colors for groups.&quot;)
-</code></pre>
-
-<p>An xy plot with panels + grouping, and custom colors for groups.</p>
-
-<pre><code class="r">kPlot &lt;- xyplot( y ~ x | gp1, kDat,
-                 groups=gp2,
-                 col=c(&quot;orange&quot;,&quot;turquoise&quot;),
-                 auto.key=TRUE,
-                 main=&quot;Testing!&quot;,
-                 xlab=&quot;xFoo&quot;,
-                 ylab=&quot;yBar&quot;
-                 )
-makeSVG( kPlot, kDat, outFile=&quot;xy_plot_with_panels_and_groups_color.svg&quot; )
-Kmisc:::kSvg( &quot;xy_plot_with_panels_and_groups_color.svg&quot;, width=300, height=300 )
-</code></pre>
-
-<div align='center'>
-<embed src="xy_plot_with_panels_and_groups_color.svg" width=300 height=300 type="image/svg+xml" />
-</div>
-
-<pre><code class="r">
-p(&quot;An xy plot with panels + grouping, and custom colors for groups, and smoothers.&quot;)
-</code></pre>
-
-<p>An xy plot with panels + grouping, and custom colors for groups, and smoothers.</p>
-
-<pre><code class="r">kPlot &lt;- xyplot( y ~ x | gp1, kDat,
-                 groups=gp2,
-                 col=c(&quot;orange&quot;,&quot;turquoise&quot;),
-                 auto.key=TRUE,
-                 panel = function(x, y, ...) {
-                   panel.xyplot(x, y, ...)
-                   panel.loess(x, y, col=&quot;red&quot;)
-                 },
-                 main=&quot;Testing!&quot;,
-                 xlab=&quot;xFoo&quot;,
-                 ylab=&quot;yBar&quot;
-                 )
-makeSVG( kPlot, kDat, outFile=&quot;xy_plot_with_panels_and_groups_color_loess.svg&quot; )
-Kmisc:::kSvg( &quot;xy_plot_with_panels_and_groups_color_loess.svg&quot;, width=300, height=300 )
-</code></pre>
-
-<div align='center'>
-<embed src="xy_plot_with_panels_and_groups_color_loess.svg" width=300 height=300 type="image/svg+xml" />
-</div>
-
-<pre><code class="r">
-p(&quot;A dotplot. Note that in order to get the fill on highlight, it is necessary to specify a &#39;hollow&#39; pch.&quot;)
-</code></pre>
-
-<p>A dotplot. Note that in order to get the fill on highlight, it is necessary to specify a &lsquo;hollow&rsquo; pch.</p>
-
-<pre><code class="r">
-kPlot &lt;- dotplot( y ~ gp1, kDat, par.settings=list(
-  dot.symbol=list( pch=1 )
-  ) )
-makeSVG( kPlot, kDat, outFile=&quot;dotplot.svg&quot; )
-Kmisc:::kSvg( &quot;dotplot.svg&quot;, width=300, height=300 )
-</code></pre>
-
-<div align='center'>
-<embed src="dotplot.svg" width=300 height=300 type="image/svg+xml" />
-</div>
-
-<pre><code class="r">
-p(&quot;dotplot with extra panels&quot;)
-</code></pre>
-
-<p>dotplot with extra panels</p>
-
-<pre><code class="r">kPlot &lt;- dotplot( y ~ gp1 | gp2, kDat,
-                  par.settings=list(
-                    dot.symbol=list( pch=1 )
-                    )
-                  )
-makeSVG( kPlot, kDat, outFile=&quot;dotplot_with_panels.svg&quot; )
-Kmisc:::kSvg( &quot;dotplot_with_panels.svg&quot;, width=300, height=300 )
-</code></pre>
-
-<div align='center'>
-<embed src="dotplot_with_panels.svg" width=300 height=300 type="image/svg+xml" />
-</div>
-
-<pre><code class="r">
-p(&quot;boxplot with panels&quot;)
-</code></pre>
-
-<p>boxplot with panels</p>
-
-<pre><code class="r">kPlot &lt;- SVG.bwplot( y ~ gp1 | gp2, kDat )
-makeSVG( kPlot, kDat, outFile=&quot;bwplot_with_panels.svg&quot; )
-Kmisc:::kSvg( &quot;bwplot_with_panels.svg&quot;, width=300, height=300 )
-</code></pre>
-
-<div align='center'>
-<embed src="bwplot_with_panels.svg" width=300 height=300 type="image/svg+xml" />
-</div>
-
-<pre><code class="r">
-</code></pre>
+<p>As the project is very beta, expect there to be bugs. The function has been
+fairly well tested for &#39;typical&#39; plots and arguments.</p>
 
 </body>
 

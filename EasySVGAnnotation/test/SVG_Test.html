@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>Testing makeSVG</title>
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 12px;
+   margin: 8px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 { 
+   font-size:2.2em; 
+}
+
+h2 { 
+   font-size:1.8em; 
+}
+
+h3 { 
+   font-size:1.4em; 
+}
+
+h4 { 
+   font-size:1.0em; 
+}
+
+h5 { 
+   font-size:0.9em; 
+}
+
+h6 { 
+   font-size:0.8em; 
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre {	
+   margin-top: 0;
+   max-width: 95%;
+   border: 1px solid #ccc;
+   white-space: pre-wrap;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code.r, code.cpp {
+   background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * { 
+      background: transparent !important; 
+      color: black !important; 
+      filter:none !important; 
+      -ms-filter: none !important; 
+   }
+
+   body { 
+      font-size:12pt; 
+      max-width:100%; 
+   }
+       
+   a, a:visited { 
+      text-decoration: underline; 
+   }
+
+   hr { 
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote { 
+      padding-right: 1em; 
+      page-break-inside: avoid; 
+   }
+
+   tr, img { 
+      page-break-inside: avoid; 
+   }
+
+   img { 
+      max-width: 100% !important; 
+   }
+
+   @page :left { 
+      margin: 15mm 20mm 15mm 10mm; 
+   }
+     
+   @page :right { 
+      margin: 15mm 10mm 15mm 20mm; 
+   }
+
+   p, h2, h3 { 
+      orphans: 3; widows: 3; 
+   }
+
+   h2, h3 { 
+      page-break-after: avoid; 
+   }
+}
+
+</style>
+
+
+
+
+
+</head>
+
+<body>
+<h1>Testing makeSVG</h1>
+
+<p>This is an R markdown document that tests the &#39;makeSVG.R&#39; function for several kinds of plots.</p>
+
+<p>A quick look at the head of the data&hellip;</p>
+
+<table ><tr><td>y</td><td>x</td><td>gp1</td><td>gp2</td><td>id</td></tr><tr><td>-0.946720559255072</td><td>-0.133150964328944</td><td>1</td><td>a</td><td>1</td></tr><tr><td>-1.27335391978623</td><td>-1.75652739555764</td><td>1</td><td>a</td><td>2</td></tr><tr><td>-0.168031392925371</td><td>-0.388779864071743</td><td>1</td><td>a</td><td>3</td></tr><tr><td>-3.47849757728169</td><td>0.0892072230732945</td><td>1</td><td>a</td><td>4</td></tr><tr><td>1.76242068173173</td><td>0.845013004067436</td><td>1</td><td>a</td><td>5</td></tr><tr><td>2.57558527887169</td><td>0.962527968484271</td><td>1</td><td>a</td><td>6</td></tr></table> 
+
+<p>A simple xy plot.</p>
+
+<div align='center'>
+<embed src="simple_xy_plot.svg" width=300 height=300 type="image/svg+xml" />
+</div>
+
+<p>An xy plot, with panels.</p>
+
+<div align='center'>
+<embed src="xy_plot_with_panels.svg" width=300 height=300 type="image/svg+xml" />
+</div>
+
+<p>An xy plot with panels + grouping.</p>
+
+<div align='center'>
+<embed src="xy_plot_with_panels_and_groups.svg" width=300 height=300 type="image/svg+xml" />
+</div>
+
+<p>An xy plot with panels + grouping, and custom colors for groups.</p>
+
+<div align='center'>
+<embed src="xy_plot_with_panels_and_groups_color.svg" width=300 height=300 type="image/svg+xml" />
+</div>
+
+<p>An xy plot with panels + grouping, and custom colors for groups, and smoothers.</p>
+
+<div align='center'>
+<embed src="xy_plot_with_panels_and_groups_color_loess.svg" width=300 height=300 type="image/svg+xml" />
+</div>
+
+<p>A dotplot. Note that in order to get the fill on highlight, it is necessary to specify a &lsquo;hollow&rsquo; pch.</p>
+
+<div align='center'>
+<embed src="dotplot.svg" width=300 height=300 type="image/svg+xml" />
+</div>
+
+<p>dotplot with extra panels</p>
+
+<div align='center'>
+<embed src="dotplot_with_panels.svg" width=300 height=300 type="image/svg+xml" />
+</div>
+
+<p>boxplot with panels</p>
+
+<div align='center'>
+<embed src="bwplot_with_panels.svg" width=300 height=300 type="image/svg+xml" />
+</div>
+
+</body>
+
+</html>
+
