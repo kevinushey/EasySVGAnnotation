@@ -1,6 +1,3 @@
-library(SVGAnnotation)
-library(plyr)
-
 #' EasySVGAnnotation-ready Lattice Boxplot
 #' 
 #' This function generates a lattice boxplot with suitable defaults for the
